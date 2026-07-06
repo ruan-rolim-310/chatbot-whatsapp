@@ -1,98 +1,395 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🤖 Chatbot WhatsApp com IA
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Sistema de atendimento automatizado para WhatsApp utilizando Inteligência Artificial, desenvolvido com NestJS, LangChain, LangGraph e WAHA.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+O projeto foi criado para automatizar vendas e atendimento, permitindo que clientes realizem pedidos diretamente pelo WhatsApp enquanto a IA consulta informações de estoque, histórico de conversas e regras de negócio para responder de forma contextualizada.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🚀 Funcionalidades
 
-## Project setup
+- 📱 Integração com WhatsApp via WAHA
+- 🤖 Atendimento automatizado com IA
+- 🧠 Memória de contexto da conversa
+- 👤 Cadastro automático de clientes
+- 💬 Histórico de mensagens
+- 📦 Controle de estoque
+- 🛒 Gestão de pedidos
+- 🏪 Regras de negócio personalizadas
+- 🔄 Webhook para recebimento de mensagens
+- 💾 Persistência utilizando TypeORM
 
-```bash
-$ npm install
+---
+
+## 🏗️ Arquitetura
+
+```text
+WhatsApp
+    │
+    ▼
+WAHA
+    │
+    ▼
+Webhook (/waha/webhook)
+    │
+    ├── Cliente
+    ├── Histórico
+    ├── Estoque
+    ├── Pedidos
+    │
+    ▼
+Prompt Builder
+    │
+    ▼
+LangGraph + LangChain
+    │
+    ▼
+Modelo de IA
+    │
+    ▼
+Resposta
+    │
+    ▼
+WAHA → WhatsApp
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## 🛠️ Tecnologias
 
-# watch mode
-$ npm run start:dev
+### Backend
 
-# production mode
-$ npm run start:prod
+- NestJS
+- TypeScript
+- TypeORM
+- SQLite
+
+### Inteligência Artificial
+
+- LangChain
+- LangGraph
+- OpenAI
+- Google Generative AI (Gemini)
+
+### Integrações
+
+- WAHA (WhatsApp HTTP API)
+- Axios
+
+### Infraestrutura
+
+- Docker
+- Docker Compose
+
+---
+
+## 📂 Estrutura do Projeto
+
+```text
+src/
+├── customer/
+│   ├── entities/
+│   ├── dto/
+│   └── services
+│
+├── messages/
+│   ├── entities/
+│   ├── dto/
+│   └── services
+│
+├── stock/
+│   ├── entities/
+│   ├── dto/
+│   └── services
+│
+├── product/
+│   ├── entities/
+│   ├── dto/
+│   └── services
+│
+├── order/
+│   ├── entities/
+│   ├── dto/
+│   └── services
+│
+├── prompt/
+│   └── geração de prompts
+│
+├── waha/
+│   └── integração WhatsApp
+│
+├── work-graph/
+│   ├── graphs/
+│   ├── tools/
+│   └── agentes LangGraph
+│
+├── database/
+└── config/
 ```
 
-## Run tests
+---
+
+## ⚙️ Como Funciona
+
+Quando um cliente envia uma mensagem:
+
+1. O WAHA recebe a mensagem.
+2. O webhook é acionado.
+3. O sistema verifica se o cliente existe.
+4. Caso não exista, cria automaticamente.
+5. Busca o histórico da conversa.
+6. Consulta os produtos disponíveis em estoque.
+7. Monta um prompt contextualizado.
+8. Envia para o agente de IA.
+9. Salva pergunta e resposta.
+10. Retorna a resposta para o WhatsApp.
+
+---
+
+## 📦 Instalação
+
+### Clonar repositório
 
 ```bash
-# unit tests
-$ npm run test
+git clone https://github.com/ruan-rolim-310/chatbot-whatsapp.git
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cd chatbot-whatsapp
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Instalar dependências
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm install
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 🔧 Variáveis de Ambiente
 
-Check out a few resources that may come in handy when working with NestJS:
+Crie um arquivo `.env`:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```env
+PORT=3000
 
-## Support
+OPENAI_API_KEY=sua_chave
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+GOOGLE_API_KEY=sua_chave
 
-## Stay in touch
+WAHA_URL=http://localhost:4000
+WAHA_API_KEY=admin
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+> Ajuste as variáveis conforme sua implementação.
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## ▶️ Executando Localmente
+
+Modo desenvolvimento:
+
+```bash
+npm run start:dev
+```
+
+Build:
+
+```bash
+npm run build
+```
+
+Produção:
+
+```bash
+npm run start:prod
+```
+
+---
+
+## 🐳 Docker
+
+O projeto disponibiliza um ambiente com:
+
+- Redis
+- PostgreSQL
+- WAHA
+- n8n
+
+Subir infraestrutura:
+
+```bash
+docker compose up -d
+```
+
+Serviços:
+
+| Serviço | Porta |
+|----------|---------|
+| WAHA | 4000 |
+| PostgreSQL | 5432 |
+| Redis | 6379 |
+| n8n | 5678 |
+
+---
+
+## 📡 Endpoints
+
+### Health Check
+
+```http
+GET /waha/health
+```
+
+Resposta:
+
+```json
+{
+  "status": "healthy"
+}
+```
+
+---
+
+### Webhook WhatsApp
+
+```http
+POST /waha/webhook
+```
+
+Recebe mensagens enviadas pelo WAHA.
+
+---
+
+## 🧠 Inteligência Artificial
+
+O agente utiliza:
+
+- Histórico do cliente
+- Produtos disponíveis
+- Quantidades em estoque
+- Dados cadastrais
+- Regras de negócio
+- Contexto da conversa
+
+O sistema gera prompts dinâmicos para garantir respostas coerentes e alinhadas ao fluxo de vendas.
+
+---
+
+## 📊 Entidades Principais
+
+### Cliente
+
+```text
+- id
+- nome
+- telefone
+```
+
+### Mensagem
+
+```text
+- id
+- conteúdo
+- timestamp
+- cliente
+```
+
+### Produto
+
+```text
+- id
+- nome
+- preço
+```
+
+### Estoque
+
+```text
+- quantidade
+- reservado
+- validade
+- lote
+```
+
+### Pedido
+
+```text
+- cliente
+- itens
+- valor total
+```
+
+---
+
+## 🔄 Fluxo de Atendimento
+
+```text
+Cliente
+   ↓
+WhatsApp
+   ↓
+WAHA
+   ↓
+Webhook
+   ↓
+Consulta Cliente
+   ↓
+Consulta Histórico
+   ↓
+Consulta Estoque
+   ↓
+Prompt
+   ↓
+IA
+   ↓
+Resposta
+   ↓
+WhatsApp
+```
+
+---
+
+## 🧪 Testes
+
+```bash
+npm run test
+```
+
+Cobertura:
+
+```bash
+npm run test:cov
+```
+
+Testes E2E:
+
+```bash
+npm run test:e2e
+```
+
+---
+
+## 📈 Melhorias Futuras
+
+- [ ] Painel administrativo
+- [ ] Dashboard de vendas
+- [ ] Integração com Pix automática
+- [ ] Reconhecimento de áudio
+- [ ] Catálogo com imagens
+- [ ] Múltiplos atendentes
+- [ ] Multiempresa
+- [ ] Integração com ERP
+
+---
+
+## 👨‍💻 Autor
+
+Ruan Rolim
+
+GitHub:
+https://github.com/ruan-rolim-310
+
+---
+
+## 📄 Licença
+
+Projeto para fins de estudo e desenvolvimento interno.
