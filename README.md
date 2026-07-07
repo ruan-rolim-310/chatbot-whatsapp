@@ -1,154 +1,140 @@
-# 🤖 Chatbot WhatsApp com IA
+<div align="center">
 
-Sistema de atendimento automatizado para WhatsApp utilizando Inteligência Artificial, desenvolvido com NestJS, LangChain, LangGraph e WAHA.
+# 🤖 Chatbot WhatsApp AI
 
-O projeto foi criado para automatizar vendas e atendimento, permitindo que clientes realizem pedidos diretamente pelo WhatsApp enquanto a IA consulta informações de estoque, histórico de conversas e regras de negócio para responder de forma contextualizada.
+### Assistente de vendas inteligente para WhatsApp utilizando IA Generativa, LangGraph e NestJS
+
+<p align="center">
+  <img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/LangGraph-000000?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/LangChain-121212?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai" />
+  <img src="https://img.shields.io/badge/Gemini-4285F4?style=for-the-badge&logo=google" />
+  <img src="https://img.shields.io/badge/WAHA-25D366?style=for-the-badge&logo=whatsapp" />
+</p>
+
+Automatize vendas e atendimento via WhatsApp utilizando agentes inteligentes capazes de compreender contexto, consultar estoque, registrar pedidos e responder clientes de forma natural.
+
+</div>
 
 ---
 
-## 🚀 Funcionalidades
+# ✨ Funcionalidades
 
+- 🤖 Atendimento automático com IA
 - 📱 Integração com WhatsApp via WAHA
-- 🤖 Atendimento automatizado com IA
-- 🧠 Memória de contexto da conversa
+- 🧠 Memória de conversa
 - 👤 Cadastro automático de clientes
-- 💬 Histórico de mensagens
-- 📦 Controle de estoque
-- 🛒 Gestão de pedidos
-- 🏪 Regras de negócio personalizadas
-- 🔄 Webhook para recebimento de mensagens
-- 💾 Persistência utilizando TypeORM
+- 📦 Consulta de estoque em tempo real
+- 🛒 Criação e gerenciamento de pedidos
+- 💬 Histórico completo de mensagens
+- 🔄 Webhook para eventos do WhatsApp
+- 🏪 Regras de negócio customizadas
+- 📊 Persistência com TypeORM
 
 ---
 
-## 🏗️ Arquitetura
+# 🏗️ Arquitetura
 
-```text
-WhatsApp
-    │
-    ▼
-WAHA
-    │
-    ▼
-Webhook (/waha/webhook)
-    │
-    ├── Cliente
-    ├── Histórico
-    ├── Estoque
-    ├── Pedidos
-    │
-    ▼
-Prompt Builder
-    │
-    ▼
-LangGraph + LangChain
-    │
-    ▼
-Modelo de IA
-    │
-    ▼
-Resposta
-    │
-    ▼
-WAHA → WhatsApp
+```mermaid
+flowchart TD
+
+A[Cliente] --> B[WhatsApp]
+B --> C[WAHA]
+
+C --> D[Webhook]
+
+D --> E[Cliente]
+D --> F[Histórico]
+D --> G[Produtos]
+D --> H[Estoque]
+
+E --> I[Prompt Builder]
+F --> I
+G --> I
+H --> I
+
+I --> J[LangGraph]
+
+J --> K[OpenAI]
+J --> L[Gemini]
+
+K --> M[Resposta]
+L --> M
+
+M --> C
+C --> B
 ```
 
 ---
 
-## 🛠️ Tecnologias
+# 🎯 Casos de Uso
 
-### Backend
+### Atendimento Comercial
 
-- NestJS
-- TypeScript
-- TypeORM
-- SQLite
+- Apresentação de produtos
+- Consulta de disponibilidade
+- Esclarecimento de dúvidas
+- Registro de interesse
 
-### Inteligência Artificial
+### Gestão de Pedidos
 
-- LangChain
-- LangGraph
-- OpenAI
-- Google Generative AI (Gemini)
+- Criação de pedidos
+- Consulta de pedidos
+- Atualização de status
 
-### Integrações
+### Catálogo Inteligente
 
-- WAHA (WhatsApp HTTP API)
-- Axios
-
-### Infraestrutura
-
-- Docker
-- Docker Compose
+- Busca de produtos
+- Consulta de estoque
+- Recomendações personalizadas
 
 ---
 
-## 📂 Estrutura do Projeto
+# 🧠 Como a IA Funciona
+
+O agente recebe:
+
+- Dados do cliente
+- Histórico da conversa
+- Produtos cadastrados
+- Estoque disponível
+- Regras do negócio
+
+Essas informações são transformadas em um contexto estruturado para o modelo de linguagem, permitindo respostas mais precisas e consistentes.
+
+---
+
+# 📂 Estrutura do Projeto
 
 ```text
-src/
-├── customer/
-│   ├── entities/
-│   ├── dto/
-│   └── services
+src
 │
-├── messages/
-│   ├── entities/
-│   ├── dto/
-│   └── services
+├── customer
+├── messages
+├── product
+├── stock
+├── order
 │
-├── stock/
-│   ├── entities/
-│   ├── dto/
-│   └── services
+├── prompt
 │
-├── product/
-│   ├── entities/
-│   ├── dto/
-│   └── services
+├── waha
 │
-├── order/
-│   ├── entities/
-│   ├── dto/
-│   └── services
+├── work-graph
+│   ├── graphs
+│   ├── tools
+│   └── agents
 │
-├── prompt/
-│   └── geração de prompts
-│
-├── waha/
-│   └── integração WhatsApp
-│
-├── work-graph/
-│   ├── graphs/
-│   ├── tools/
-│   └── agentes LangGraph
-│
-├── database/
-└── config/
+├── config
+└── database
 ```
 
 ---
 
-## ⚙️ Como Funciona
+# 🚀 Quick Start
 
-Quando um cliente envia uma mensagem:
-
-1. O WAHA recebe a mensagem.
-2. O webhook é acionado.
-3. O sistema verifica se o cliente existe.
-4. Caso não exista, cria automaticamente.
-5. Busca o histórico da conversa.
-6. Consulta os produtos disponíveis em estoque.
-7. Monta um prompt contextualizado.
-8. Envia para o agente de IA.
-9. Salva pergunta e resposta.
-10. Retorna a resposta para o WhatsApp.
-
----
-
-## 📦 Instalação
-
-### Clonar repositório
+## Clonar o projeto
 
 ```bash
 git clone https://github.com/ruan-rolim-310/chatbot-whatsapp.git
@@ -156,240 +142,117 @@ git clone https://github.com/ruan-rolim-310/chatbot-whatsapp.git
 cd chatbot-whatsapp
 ```
 
-### Instalar dependências
+## Instalar dependências
 
 ```bash
 npm install
 ```
 
----
-
-## 🔧 Variáveis de Ambiente
-
-Crie um arquivo `.env`:
+## Configurar ambiente
 
 ```env
-PORT=3000
-
-OPENAI_API_KEY=sua_chave
-
-GOOGLE_API_KEY=sua_chave
+OPENAI_API_KEY=
+GOOGLE_API_KEY=
 
 WAHA_URL=http://localhost:4000
-WAHA_API_KEY=admin
+WAHA_API_KEY=
 ```
 
-> Ajuste as variáveis conforme sua implementação.
-
----
-
-## ▶️ Executando Localmente
-
-Modo desenvolvimento:
+## Rodar aplicação
 
 ```bash
 npm run start:dev
 ```
 
-Build:
-
-```bash
-npm run build
-```
-
-Produção:
-
-```bash
-npm run start:prod
-```
-
 ---
 
-## 🐳 Docker
+# 🐳 Docker
 
-O projeto disponibiliza um ambiente com:
-
-- Redis
-- PostgreSQL
-- WAHA
-- n8n
-
-Subir infraestrutura:
+Subir todos os serviços:
 
 ```bash
 docker compose up -d
 ```
 
-Serviços:
+Serviços incluídos:
 
-| Serviço | Porta |
-|----------|---------|
-| WAHA | 4000 |
-| PostgreSQL | 5432 |
-| Redis | 6379 |
-| n8n | 5678 |
-
----
-
-## 📡 Endpoints
-
-### Health Check
-
-```http
-GET /waha/health
-```
-
-Resposta:
-
-```json
-{
-  "status": "healthy"
-}
-```
+- PostgreSQL
+- Redis
+- WAHA
+- n8n
+- Chatbot
 
 ---
 
-### Webhook WhatsApp
+# 📡 Endpoints
+
+## Webhook
 
 ```http
 POST /waha/webhook
 ```
 
-Recebe mensagens enviadas pelo WAHA.
+Recebe mensagens enviadas pelo WhatsApp.
 
----
+## Health Check
 
-## 🧠 Inteligência Artificial
-
-O agente utiliza:
-
-- Histórico do cliente
-- Produtos disponíveis
-- Quantidades em estoque
-- Dados cadastrais
-- Regras de negócio
-- Contexto da conversa
-
-O sistema gera prompts dinâmicos para garantir respostas coerentes e alinhadas ao fluxo de vendas.
-
----
-
-## 📊 Entidades Principais
-
-### Cliente
-
-```text
-- id
-- nome
-- telefone
-```
-
-### Mensagem
-
-```text
-- id
-- conteúdo
-- timestamp
-- cliente
-```
-
-### Produto
-
-```text
-- id
-- nome
-- preço
-```
-
-### Estoque
-
-```text
-- quantidade
-- reservado
-- validade
-- lote
-```
-
-### Pedido
-
-```text
-- cliente
-- itens
-- valor total
+```http
+GET /waha/health
 ```
 
 ---
 
-## 🔄 Fluxo de Atendimento
+# 🛠️ Stack Tecnológica
 
-```text
-Cliente
-   ↓
-WhatsApp
-   ↓
-WAHA
-   ↓
-Webhook
-   ↓
-Consulta Cliente
-   ↓
-Consulta Histórico
-   ↓
-Consulta Estoque
-   ↓
-Prompt
-   ↓
-IA
-   ↓
-Resposta
-   ↓
-WhatsApp
-```
+## Backend
 
----
+- NestJS
+- TypeScript
+- TypeORM
 
-## 🧪 Testes
+## Inteligência Artificial
 
-```bash
-npm run test
-```
+- LangChain
+- LangGraph
+- OpenAI
+- Google Gemini
 
-Cobertura:
+## Integrações
 
-```bash
-npm run test:cov
-```
+- WAHA
+- WhatsApp
 
-Testes E2E:
+## Infraestrutura
 
-```bash
-npm run test:e2e
-```
+- Docker
+- PostgreSQL
+- Redis
 
 ---
 
-## 📈 Melhorias Futuras
+# 📈 Roadmap
 
+- [x] Integração WhatsApp
+- [x] Atendimento por IA
+- [x] Gestão de estoque
+- [x] Gestão de pedidos
 - [ ] Painel administrativo
-- [ ] Dashboard de vendas
-- [ ] Integração com Pix automática
-- [ ] Reconhecimento de áudio
-- [ ] Catálogo com imagens
-- [ ] Múltiplos atendentes
+- [ ] Dashboard analítico
 - [ ] Multiempresa
-- [ ] Integração com ERP
+- [ ] Integração ERP
+- [ ] Integração PIX
 
 ---
 
-## 👨‍💻 Autor
+# 👨‍💻 Autor
 
-Ruan Rolim
+**Ruan Rolim**
 
 GitHub:
 https://github.com/ruan-rolim-310
 
 ---
 
-## 📄 Licença
+# 📄 Licença
 
-Projeto para fins de estudo e desenvolvimento interno.
+Este projeto está sob a licença definida pelo repositório.
